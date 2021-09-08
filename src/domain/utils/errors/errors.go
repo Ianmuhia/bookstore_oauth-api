@@ -36,4 +36,3 @@ func NewNotFoundError(message string) *RestErr {
 		Error:   "not_found",
 	}
 }
-
