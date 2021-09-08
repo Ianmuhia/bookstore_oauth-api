@@ -5,8 +5,9 @@ import (
 	"bookstore_oauth-api/src/domain/access_token"
 	"bookstore_oauth-api/src/http"
 	"bookstore_oauth-api/src/repository/db"
-	"github.com/gin-gonic/gin"
 	"log"
+
+	"github.com/gin-gonic/gin"
 )
 
 var (
@@ -20,10 +21,10 @@ func StartApplication() {
 	}
 	session.Close()
 
-	atService := access_token.NewService(db.NewRepository())
-	atHandler := http.NewHandler(atService)
+	atHandler := http.NewHandler(access_token.NewService(db.NewRepository()))
 
 	router.GET("/oauth/access_token/:access_token_id", atHandler.GetById)
+	router.POST("/oauth/access_token/", atHandler.Create)
 
 	err := router.Run(":8080")
 	if err != nil {
