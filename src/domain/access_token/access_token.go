@@ -1,9 +1,10 @@
 package access_token
 
 import (
-	"bookstore_oauth-api/src/domain/utils/errors"
 	"strings"
 	"time"
+
+	"bookstore_oauth-api/src/domain/utils/errors"
 )
 
 const (
@@ -15,6 +16,13 @@ type AccessToken struct {
 	UserId      int64  `json:"user_id"`
 	ClientId    int64  `json:"client_id"`
 	Expires     int64  `json:"expires"`
+}
+
+type AccessTokenRequest struct {
+	GrantType    string `json:"grant_type"`
+	Username     string `json:"username"`
+	ClientId     string `json:"client_id"`
+	ClientSecret string `json:"client_secret"`
 }
 
 func (at *AccessToken) Validate() *errors.RestErr {
