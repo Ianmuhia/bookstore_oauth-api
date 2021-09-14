@@ -7,8 +7,8 @@ replace github.com/mercadolibre/golang-restclient => /home/ianmuhia/projects/per
 require (
 	github.com/gin-gonic/gin v1.7.4
 	github.com/gocql/gocql v0.0.0-20210817081954-bc256bbb90de
-	github.com/stretchr/testify v1.7.0
 	github.com/mercadolibre/golang-restclient v1.0.0
+	github.com/stretchr/testify v1.7.0
 
 )
 

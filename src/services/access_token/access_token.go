@@ -1,4 +1,4 @@
-package acces_token_service
+package access_token
 
 import (
 	"strings"
@@ -23,14 +23,14 @@ type Service interface {
 
 type service struct {
 	restUsersRepo rest.RestUserRepository
-	dbRepo db.DbRepository
+	dbRepo        db.DbRepository
 	// repository Repository
 }
 
-func NewService(usersRepo rest.RestUserRepository,dbRepo db.DbRepository ) Service {
+func NewService(usersRepo rest.RestUserRepository, dbRepo db.DbRepository) Service {
 	return &service{
 		restUsersRepo: usersRepo,
-		dbRepo: dbRepo,
+		dbRepo:        dbRepo,
 		// repository: repo,
 
 	}

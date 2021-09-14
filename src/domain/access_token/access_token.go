@@ -1,6 +1,9 @@
 package access_token
 
 import (
+	"crypto/md5"
+	"encoding/hex"
+	"fmt"
 	"strings"
 	"time"
 
@@ -63,8 +66,9 @@ func (at *AccessTokenRequest) Validate() *errors.RestErr {
 	return nil
 }
 
-func GetNewAccessToken() AccessToken {
+func GetNewAccessToken(userId int64) AccessToken {
 	return AccessToken{
+		UserId:  userId,
 		Expires: time.Now().UTC().Add(expirationTime * time.Hour).Unix(),
 	}
 }
@@ -72,4 +76,15 @@ func GetNewAccessToken() AccessToken {
 func (at AccessToken) IsExpired() bool {
 
 	return time.Unix(at.Expires, 0).Before(time.Now().UTC())
+}
+
+func (at *AccessToken) Generate() {
+	at.AccessToken = GetMd5(fmt.Sprintf("at-%d-%d-ran", at.UserId, at.Expires))
+}
+
+func GetMd5(input string) string {
+	hash := md5.New()
+	defer hash.Reset()
+	hash.Write([]byte(input))
+	return hex.EncodeToString(hash.Sum(nil))
 }
