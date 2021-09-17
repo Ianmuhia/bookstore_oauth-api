@@ -37,30 +37,28 @@ func (s *usersRepository) LoginUser(email, password string) (*users.User, *error
 		Password: password,
 	}
 
-	response, err := client.R().
-		SetBody(request).
-		//   SetResult(&AuthSuccess{}).    // or SetResult(AuthSuccess{}).
-		//   SetError(&AuthError{}).       // or SetError(AuthError{}).
-		Post("/users/login")
+	response, err := client.R().SetBody(request).Post("/users/login")
 	if err != nil {
 		panic(err)
 
 	}
 
 	fmt.Println(response.Body())
+	fmt.Println(response.StatusCode())
+	// fmt.Println(response.)
 	// response := usersRestClient.Post("/users/login", request)
 	// if response == nil || response.Response == nil {
 	// 	return nil, errors.NewInternalServerError("invalid response when trying to login user")
 	// }
-	// if response.StatusCode > 299 {
-	// 	var restErr errors.RestErr
-	// 	err := json.Unmarshal(response.Bytes(), &restErr)
-	// 	if err != nil {
-	// 		return nil, errors.NewInternalServerError("invalid error interface when trying to login user")
+	if response.StatusCode() > 299 {
+		var restErr errors.RestErr
+		err := json.Unmarshal(response.Body(), &restErr)
+		if err != nil {
+			return nil, errors.NewInternalServerError("invalid error interface when trying to login user")
 
-	// 	}
-	// 	return nil, &restErr
-	// }
+		}
+		return nil, &restErr
+	}
 	var user users.User
 	if err := json.Unmarshal(response.Body(), &user); err != nil {
 		return nil, errors.NewInternalServerError("error when trying to unmarshal users response")
